@@ -33,7 +33,7 @@ Whether you are managing medication schedules, project deadlines, or daily habit
 
 ## 🏗️ Architecture
 
-
+The system follows a modular architecture separating the AI logic from the application interface.
 
 ```mermaid
 graph TD;
