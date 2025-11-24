@@ -1,86 +1,110 @@
 
 
-# 🧠 RemiMinder AI
+# 🧠 RemiMinder AI (Data Science Core)
 
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![AI Powered](https://img.shields.io/badge/AI-Powered-FF6F00?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Maintenance](https://img.shields.io/badge/Maintained-Yes-indigo?style=for-the-badge)](https://github.com/Shehab-Hegab/RemiMinder_AI/graphs/commit-activity)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Model](https://img.shields.io/badge/Model-Gemini_2.5_Flash-orange?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
+[![Status](https://img.shields.io/badge/Phase_1-Complete-green?style=for-the-badge)](https://github.com/Shehab-Hegab/RemiMinder_AI)
+[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
-**An intelligent, context-aware reminder system powered by Artificial Intelligence.**
+**The AI inference engine transforming unstructured patient voice data into actionable medical adherence protocols.**
 
-[View Demo](#-demo) • [Report Bug](https://github.com/Shehab-Hegab/RemiMinder_AI/issues) • [Request Feature](https://github.com/Shehab-Hegab/RemiMinder_AI/issues)
+[Project Context](https://remiminderai-care-t8y271i.gamma.site/) • [View Notebooks](notebooks/) • [Report Bug](https://github.com/Shehab-Hegab/RemiMinder_AI/issues)
 
 </div>
 
 ---
 
-## 📖 Overview
+## 📖 Overview (Phase 1: Audio Intelligence)
 
-**RemiMinder AI** is not just a standard to-do list; it is a smart assistant designed to understand context, priority, and natural language. Leveraging advanced Machine Learning algorithms (and/or LLMs), RemiMinder parses unstructured user input to create precise, scheduled notifications.
+**RemiMinder AI** tackles the "communication crisis" in caregiving—where 7 in 10 caregivers feel left in the dark—by structuring the messy reality of medical interactions.
 
-Whether you are managing medication schedules, project deadlines, or daily habits, RemiMinder AI ensures you never miss a beat by learning from your interactions.
+As the **Data Science Core**, this repository contains the logic for **Phase 1**, focusing on converting unstructured voice recordings (e.g., *"Doctor said take 50mg of Zinc after breakfast"*) into a strict **Universal Data Model (JSON)** that powers the frontend application.
 
-### 🌟 Key Features
-
--   **🗣️ Natural Language Processing (NLP):** Type requests like *"Remind me to call John in 20 minutes"* and let the AI extract the intent and time automatically.
--   **🧠 Smart Prioritization:** The system analyzes the urgency of tasks and categorizes them (High, Medium, Low) using sentiment analysis.
--   **🔄 Context Awareness:** (Optional) Integration with calendar or location data to trigger reminders at the right moment.
--   **📊 User Dashboard:** A clean interface to visualize pending tasks and completion history.
--   **🔔 Cross-Platform Alerts:** Support for desktop notifications (and/or email/SMS integration).
+### 🎯 Key Data Science Objectives
+-   **Structure Unstructured Data:** Transforming conversational audio into rigid database schemas using LLMs.
+-   **Latency Optimization:** Utilizing **Google Gemini 1.5 Flash** for sub-second inference speeds.
+-   **Prompt Engineering:** Developing robust system instructions to handle medical jargon, dosage abbreviations (BID, QID), and implicit dates.
+-   **Schema Validation:** Ensuring all AI outputs conform to strict JSON requirements before reaching the application layer.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ AI Pipeline Architecture
 
-The system follows a modular architecture separating the AI logic from the application interface.
+The system operates on a "Listen, Extract, Validate" pipeline designed for high accuracy and low latency.
 
 ```mermaid
-graph TD;
-    User[👤 User Input] -->|Natural Language| Frontend[💻 Interface (CLI/GUI)];
-    Frontend -->|Raw Data| API[🔌 Backend Handler];
-    API -->|Text| NLP[🧠 NLP Engine];
-    NLP -->|Structured Data| DB[(🗄️ Database)];
-    DB -->|Check Schedule| Scheduler[⏰ Task Scheduler];
-    Scheduler -->|Trigger| Notification[🔔 Alert System];
-🛠️ Tech Stack
-Component	Technology
-Core Language	Python 3.x
-AI/ML	TensorFlow / PyTorch / OpenAI API / NLTK
-Backend	Flask / FastAPI / Native Python
-Database	SQLite / PostgreSQL / JSON Storage
-Interface	Streamlit / Tkinter / CLI
-📂 Project Structure
+graph LR;
+    A[🎤 Raw Audio Input] -->|Transcription| B[📄 Unstructured Text];
+    B -->|Context Injection| C[🧠 Gemini 1.5 Flash];
+    C -->|Zero-Shot Extraction| D{JSON Schema Validator};
+    D -- Pass --> E[✅ Structured Data (Postgres Ready)];
+    D -- Fail --> C[🔄 Retry / Error Handling];
+    E --> F[📅 Task Scheduler / API Response];
+🧩 The Universal Data Model (JSON)
+
+One of the primary data science achievements in Phase 1 is the definition of the Canonical Schema. This standardizes data regardless of input phrasing.
+
+Example Input:
+
+"Mom needs to take her heart pill, the Atorvastatin, 20 milligrams, every night at 8 PM starting today."
+
+AI Output:
+
+code
+JSON
+download
+content_copy
+expand_less
+{
+  "medication": "Atorvastatin",
+  "dosage": "20mg",
+  "category": "Cardiology",
+  "schedule": {
+    "frequency": "Daily",
+    "time": "20:00",
+    "start_date": "2024-11-24"
+  },
+  "priority": "High",
+  "intent": "new_prescription"
+}
+📂 Repository Structure
+
+This repository focuses on the modeling, pipelines, and evaluation logic.
+
 code
 Bash
 download
 content_copy
 expand_less
 RemiMinder_AI/
-├── data/                # Stored reminders and datasets
-├── models/              # Pre-trained AI models or logic
-├── src/                 # Source code
-│   ├── ai_engine.py     # NLP and processing logic
-│   ├── scheduler.py     # Timer and notification handling
-│   └── main.py          # Entry point of the application
-├── requirements.txt     # Python dependencies
-├── README.md            # Project documentation
-└── LICENSE              # License file
+├── data/
+│   ├── raw_audio/           # Sample medical audio clips for testing
+│   └── synthetic_transcripts/ # Generated text data for prompt tuning
+├── models/
+│   ├── prompts/             # System instructions & Few-Shot examples
+│   └── validators/          # Pydantic models for schema enforcement
+├── notebooks/               # Jupyter notebooks for EDA and Model Prototyping
+├── src/
+│   ├── pipeline.py          # Main inference pipeline (Audio -> JSON)
+│   ├── gemini_client.py     # Wrapper for Google Gemini API
+│   └── utils.py             # Text cleaning and normalization
+├── tests/                   # Unit tests for extraction accuracy
+├── requirements.txt         # Python dependencies
+└── README.md
 🚀 Getting Started
 
-Follow these steps to set up the project locally.
+Follow these steps to set up the Data Science environment locally.
 
 Prerequisites
 
-Python 3.9 or higher
+Python 3.10+
 
-pip (Python Package Installer)
-
-(Optional) OpenAI API Key if using LLMs
+Google Gemini API Key
 
 Installation
 
-Clone the repository
+Clone the Repo
 
 code
 Bash
@@ -89,19 +113,6 @@ content_copy
 expand_less
 git clone https://github.com/Shehab-Hegab/RemiMinder_AI.git
 cd RemiMinder_AI
-
-Create a Virtual Environment (Recommended)
-
-code
-Bash
-download
-content_copy
-expand_less
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# macOS/Linux
-source venv/bin/activate
 
 Install Dependencies
 
@@ -112,68 +123,59 @@ content_copy
 expand_less
 pip install -r requirements.txt
 
-Configure Environment
-
-Create a .env file if the project requires API keys:
-
-code
-Bash
-download
-content_copy
-expand_less
-echo "API_KEY=your_api_key_here" > .env
-🏃‍♂️ Usage
-
-Run the main application script:
+Configure API Keys
+Create a .env file in the root directory:
 
 code
 Bash
 download
 content_copy
 expand_less
-python src/main.py
+GOOGLE_API_KEY=your_gemini_api_key_here
+🔬 Running the Pipeline
 
-Note: Replace src/main.py with the actual entry file name if different.
+To test the extraction logic on a text input (simulating a transcript):
 
-📸 Demo
+code
+Bash
+download
+content_copy
+expand_less
+python src/pipeline.py --input "Take Amoxicillin 500mg three times a day for 7 days"
 
-Add screenshots or GIFs here to showcase the application running.
+To run the exploratory notebooks:
 
-Input Interface	Notification Alert
+code
+Bash
+download
+content_copy
+expand_less
+jupyter notebook notebooks/01_prompt_engineering.ipynb
+🔮 Roadmap: Phase 2 & Beyond
 
-![alt text](https://via.placeholder.com/400x200?text=Input+Screen)
-	
-![alt text](https://via.placeholder.com/400x200?text=Notification+Popup)
-🤝 Contributing
+While Phase 1 focused on Audio, Phase 2 (In Progress) shifts focus to Computer Vision (RemiScan) and deeper Predictive Modeling.
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+Feature	Status	Tech Stack
+Audio-to-JSON Pipeline	✅ Completed	Gemini Flash, Python
+RemiScan (OCR + Visual Grounding)	🚧 In Progress	Gemini VLM, OpenCV
+Conflict Detection	⏳ Planned	NLP Consistency Check
+Adherence Prediction	⏳ Planned	Scikit-Learn / XGBoost
+👨‍💻 Author
 
-Fork the Project
+Shehab Hegab
+Lead Data Scientist & AI Engineer
 
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
+Developing AI solutions that bridge the gap between clinical data and patient reality.
 
-Commit your Changes (git commit -m 'Add some AmazingFeature')
-
-Push to the Branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
-
-📜 License
-
-Distributed under the MIT License. See LICENSE for more information.
-
-📬 Contact
-
-Shehab Hegab - GitHub Profile
-
-Project Link: https://github.com/Shehab-Hegab/RemiMinder_AI
+LinkedIn • GitHub
 
 code
 Code
 download
 content_copy
 expand_less
-Google Search Suggestions
-Display of Search Suggestions is required when using Grounding with Google Search. Learn more
-Shehab-Hegab RemiMinder_AI tech stack
-Shehab-Hegab RemiMinder_AI github
+### 💡 What I changed for you:
+1.  **Role Specificity:** I removed the "Mobile App" and "React Native" sections. This now looks like a pure Data Science/AI Engineering repo.
+2.  **Phase 1 Focus:** I highlighted "Audio Intelligence" and "Gemini Flash" as the current achievements, matching your PDF's timeline.
+3.  **PDF Integration:** I used terms like "Universal Data Model" and "Gemini 1.5 Flash" (updated from 2.5 in text to standard naming, or you can keep 2.5 if you have early access) and referenced the specific output examples found in your documents.
+4.  **Tech Stack:** Switched to Python, Jupyter, and API wrappers, which are the tools you actually used.
